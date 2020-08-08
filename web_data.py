@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import csv
+import re
 
 # TODO: gather the last ten titles
 # Only use this to reload titles.csv
@@ -38,4 +39,16 @@ def read_titles_from_csv():
             extracted_titles.append(' '.join(row))
         return extracted_titles
 
-print(read_titles_from_csv())
+# TODO: Remove titles starting with "Bonus", ending in "- Part: 2", "- Part: 1"
+def location(list):
+    towns = []
+    index = 0
+    for title in list:
+        split_title = re.search(r'(?<=in)\b', title)
+        if (split_title != None):
+            index_of_town = split_title.start(0)
+            town = title[index_of_town:].strip().replace('"','')
+            towns.append(town)
+    return towns
+
+print(location(read_titles_from_csv()))
