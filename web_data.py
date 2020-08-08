@@ -39,16 +39,17 @@ def read_titles_from_csv():
             extracted_titles.append(' '.join(row))
         return extracted_titles
 
-# TODO: Remove titles starting with "Bonus", ending in "- Part: 2", "- Part: 1"
-def location(list):
-    towns = []
+# TODO: Remove titles ending in "- Part: 2", "- Part: 1"
+def locations(list):
+    locations = []
     index = 0
     for title in list:
         split_title = re.search(r'(?<=in)\b', title)
         if (split_title != None):
             index_of_town = split_title.start(0)
-            town = title[index_of_town:].strip().replace('"','')
-            towns.append(town)
-    return towns
+            # if part 1 and 2 are in the town
+            location = title[index_of_town:].strip().replace('"','')
+            locations.append(location)
+    return locations
 
-print(location(read_titles_from_csv()))
+print(locations(read_titles_from_csv()))
