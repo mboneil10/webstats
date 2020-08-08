@@ -38,4 +38,4 @@ def read_titles_from_csv():
             extracted_titles.append(' '.join(row))
         return extracted_titles
 
-read_titles_from_csv()
+print(read_titles_from_csv())
