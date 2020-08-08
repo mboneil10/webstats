@@ -3,8 +3,10 @@ from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 import time
 import pandas as pd
+import csv
 
 # TODO: gather the last ten titles
+# Only use this to reload titles.csv
 def data_import():
     titles = []
     i = 18
@@ -28,4 +30,12 @@ def data_import():
     df = pd.DataFrame({'Titles': titles})
     return df.to_csv('titles.csv', index=False, encoding='utf-8')
 
-data_import()
+def read_titles_from_csv():
+    extracted_titles = []
+    with open('titles.csv') as csvfile:
+        titlereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for row in titlereader:
+            extracted_titles.append(' '.join(row))
+        return extracted_titles
+
+read_titles_from_csv()
