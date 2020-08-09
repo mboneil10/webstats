@@ -7,6 +7,9 @@ import csv
 import re
 import plotly.figure_factory as ff
 import numpy as np
+import geopandas
+import shapefile
+import shapely
 
 # TODO: gather the last ten titles
 # Only use this to reload titles.csv
@@ -73,6 +76,7 @@ def ranking(list):
             loc_count[loc] = 1
     return loc_count
 
+# This is sample code of building the US map
 df_sample = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/laucnty16.csv')
 df_sample['State FIPS Code'] = df_sample['State FIPS Code'].apply(lambda x: str(x).zfill(2))
 df_sample['County FIPS Code'] = df_sample['County FIPS Code'].apply(lambda x: str(x).zfill(3))
