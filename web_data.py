@@ -33,23 +33,24 @@ def data_import():
 
 def read_titles_from_csv():
     extracted_titles = []
-    with open('titles.csv') as csvfile:
+    with open('testfile.csv') as csvfile:
         titlereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in titlereader:
             extracted_titles.append(' '.join(row))
         return extracted_titles
 
-# TODO: Remove titles ending in "- Part: 2", "- Part: 1"
 def locations(list):
     locations = []
     index = 0
     for title in list:
+        if re.search(r'- Part', title):
+            index_of_town = re.search(r'- Part', title).start(0)
+            title = title[:index_of_town]
         split_title = re.search(r'(?<=in)\b', title)
         if (split_title != None):
             index_of_town = split_title.start(0)
-            # if part 1 and 2 are in the town
-            location = title[index_of_town:].strip().replace('"','')
-            locations.append(location)
+            location = title[index_of_town:].strip().replace('"', '')
+        locations.append(location)
     return locations
 
 print(locations(read_titles_from_csv()))
