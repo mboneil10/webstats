@@ -4,6 +4,14 @@ from bs4 import BeautifulSoup
 import time
 import pandas as pd
 import csv
+import re
+import plotly.figure_factory as ff
+import numpy as np
+import geopandas
+import shapefile
+import shapely
+import plotly.express as px
+import us
 
 # TODO: gather the last ten titles
 # Only use this to reload titles.csv
@@ -38,4 +46,43 @@ def read_titles_from_csv():
             extracted_titles.append(' '.join(row))
         return extracted_titles
 
-read_titles_from_csv()
+def locations(list):
+    locations = []
+    index = 0
+    for title in list:
+        if re.search(r'- Part', title):
+            index_of_town = re.search(r'- Part', title).start(0)
+            title = title[:index_of_town]
+        split_title = re.search(r'(?<=in)\b', title)
+        if (split_title != None):
+            index_of_town = split_title.start(0)
+            location = title[index_of_town:].strip().replace('"', '')
+            locations.append(location)
+    return locations
+
+def states(list):
+    states = []
+    for town_and_state in list:
+        # anything longer is the UK or some other place
+        if len(town_and_state.split(",")) == 2:
+            state = (town_and_state.split(","))[1].strip()
+        if (us.states.lookup(state) != None):
+            temp = us.states.lookup(state).abbr
+            states.append(temp)
+    return states
+
+def ranking(list):
+    loc_count = {}
+    for loc in list:
+        if loc in loc_count:
+            loc_count[loc] += 1
+        else:
+            loc_count[loc] = 1
+    return loc_count
+
+# This is sample code of building the US map
+data = ranking(states(locations(read_titles_from_csv())))
+locs = list(data.keys())
+ranks = list(data.values())
+fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa", color_continuous_scale=px.colors.sequential.Blues)
+fig.show()
