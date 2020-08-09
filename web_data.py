@@ -84,5 +84,5 @@ def ranking(list):
 data = ranking(states(locations(read_titles_from_csv())))
 locs = list(data.keys())
 ranks = list(data.values())
-fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa")
+fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa", color_continuous_scale=px.colors.sequential.Blues)
 fig.show()
