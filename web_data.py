@@ -11,6 +11,7 @@ import geopandas
 import shapefile
 import shapely
 import plotly.express as px
+import us
 
 # TODO: gather the last ten titles
 # Only use this to reload titles.csv
@@ -65,7 +66,9 @@ def states(list):
         # anything longer is the UK or some other place
         if len(town_and_state.split(",")) == 2:
             state = (town_and_state.split(","))[1].strip()
-            states.append(state)
+        if (us.states.lookup(state) != None):
+            temp = us.states.lookup(state).abbr
+            states.append(temp)
     return states
 
 def ranking(list):
@@ -78,6 +81,8 @@ def ranking(list):
     return loc_count
 
 # This is sample code of building the US map
-fig = px.choropleth(locations=["CA", "TX", "NY"], locationmode="USA-states", color=[1,2,3], scope="usa")
+data = ranking(states(locations(read_titles_from_csv())))
+locs = list(data.keys())
+ranks = list(data.values())
+fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa")
 fig.show()
-# ranking(states(locations(read_titles_from_csv())))
