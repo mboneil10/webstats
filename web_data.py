@@ -62,4 +62,13 @@ def states(list):
             states.append(state)
     return states
 
-print(states(locations(read_titles_from_csv())))
+def ranking(list):
+    loc_count = {}
+    for loc in list:
+        if loc in loc_count:
+            loc_count[loc] += 1
+        else:
+            loc_count[loc] = 1
+    return loc_count
+
+print(ranking(states(locations(read_titles_from_csv()))))
