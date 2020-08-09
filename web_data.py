@@ -33,7 +33,7 @@ def data_import():
 
 def read_titles_from_csv():
     extracted_titles = []
-    with open('testfile.csv') as csvfile:
+    with open('titles.csv') as csvfile:
         titlereader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in titlereader:
             extracted_titles.append(' '.join(row))
@@ -50,7 +50,7 @@ def locations(list):
         if (split_title != None):
             index_of_town = split_title.start(0)
             location = title[index_of_town:].strip().replace('"', '')
-        locations.append(location)
+            locations.append(location)
     return locations
 
 print(locations(read_titles_from_csv()))
