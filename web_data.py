@@ -53,4 +53,13 @@ def locations(list):
             locations.append(location)
     return locations
 
-print(locations(read_titles_from_csv()))
+def states(list):
+    states = []
+    for town_and_state in list:
+        # anything longer is the UK or some other place
+        if len(town_and_state.split(",")) == 2:
+            state = (town_and_state.split(","))[1].strip()
+            states.append(state)
+    return states
+
+print(states(locations(read_titles_from_csv())))
