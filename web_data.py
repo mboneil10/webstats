@@ -80,6 +80,12 @@ def ranking(list):
             loc_count[loc] = 1
     return loc_count
 
+def divide_by_pop(list):
+    pop = 2 # Set to two for right now
+    # This probably isn't how you iterate over a dictionary
+    for state in list:
+        list(state) = list(state)/pop
+
 # This is sample code of building the US map
 data = ranking(states(locations(read_titles_from_csv())))
 locs = list(data.keys())
