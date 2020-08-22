@@ -17,7 +17,7 @@ import us
 # Only use this to reload titles.csv
 def titles_import():
     titles = []
-    i = 18
+    i = 19
     driver = webdriver.Chrome(ChromeDriverManager().install())
     page = "https://podcasts.apple.com/us/podcast/small-town-murder/id1194755213"
     driver.get(page)
