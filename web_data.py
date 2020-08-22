@@ -15,7 +15,7 @@ import us
 
 # TODO: gather the last ten titles
 # Only use this to reload titles.csv
-def data_import():
+def titles_import():
     titles = []
     i = 18
     driver = webdriver.Chrome(ChromeDriverManager().install())
@@ -45,6 +45,15 @@ def read_titles_from_csv():
         for row in titlereader:
             extracted_titles.append(' '.join(row))
         return extracted_titles
+
+def read_populations_from_csv():
+    extracted_pops = {}
+    with open('populations.csv') as csvfile:
+        titlereader = csv.reader(csvfile, delimiter=',', quotechar='|')
+        for row in titlereader:
+            state_abbr = us.states.lookup(row[0]).abbr
+            extracted_pops[state_abbr] = row[1]
+        return extracted_pops
 
 def locations(list):
     locations = []
@@ -81,14 +90,14 @@ def ranking(list):
     return loc_count
 
 def divide_by_pop(list):
-    pop = 2 # Set to two for right now
+    pop = [2] # Set to two for right now
     # This probably isn't how you iterate over a dictionary
-    for state in list:
-        list(state) = list(state)/pop
 
+
+print(read_populations_from_csv())
 # This is sample code of building the US map
-data = ranking(states(locations(read_titles_from_csv())))
-locs = list(data.keys())
-ranks = list(data.values())
-fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa", color_continuous_scale=px.colors.sequential.Blues)
-fig.show()
+# data = ranking(states(locations(read_titles_from_csv())))
+# locs = list(data.keys())
+# ranks = list(data.values())
+# fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa", color_continuous_scale=px.colors.sequential.Blues)
+# fig.show()
