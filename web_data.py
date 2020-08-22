@@ -93,12 +93,14 @@ def ranking(list):
 def divide_by_pop(list):
     pops = read_populations_from_csv()
     for state in list.keys():
-        # mult by 1000000 to get numbers between 0 and 6.
-        list[state] = (list[state]*1000000)/(pops[state])
+        # get the number of stories per 1mil people
+        div = pops[state]/1000000
+        list[state] = list[state]/div
     return list
 
 data = divide_by_pop(ranking(states(locations(read_titles_from_csv()))))
 locs = list(data.keys())
 ranks = list(data.values())
+print(data)
 fig = px.choropleth(locations=locs, locationmode="USA-states", color=ranks, scope="usa", color_continuous_scale=px.colors.sequential.Blues)
 fig.show()
